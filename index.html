@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-<title>FROSTLINK GM Alpha 0.1.2</title>
+<title>FROSTLINK GM Alpha 0.1.2 FIX</title>
 <style>
 *{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06111f;font-family:Arial,Helvetica,sans-serif;color:white}
@@ -33,7 +33,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06111f;fon
 <canvas id="game"></canvas>
 <div id="portrait">横画面にしてくれ<br>FROSTLINKは横画面推奨</div>
 <div id="hud">
-  <div id="title">FROSTLINK GM Alpha 0.1.2</div>
+  <div id="title">FROSTLINK GM Alpha 0.1.2 FIX</div>
   <div id="score">SCORE <span id="scoreNum">0</span><br>ENEMIES <span id="enemyNum">5</span></div>
   <div id="hpbar"><div id="hpfill"></div></div>
   <canvas id="minimap" width="115" height="115"></canvas>
@@ -82,7 +82,6 @@ for(const it of items){let scale=520/it.rz, sx=W/2+it.rx*scale, base=H*.55+scale
 // tracers/effects
 for(const tr of tracers){let a=project(tr.x1,tr.y1),b=project(tr.x2,tr.y2);if(b.rz>0){ctx.strokeStyle='rgba(150,245,255,.95)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(W/2,H*.52);ctx.lineTo(W/2+b.rx*(520/b.rz),H*.55);ctx.stroke()}}
 for(const ef of effects){let p=project(ef.x,ef.y);if(p.rz>0){let sx=W/2+p.rx*(520/p.rz),sy=H*.53;ctx.fillStyle=ef.c==='red'?'rgba(255,35,35,.9)':ef.c==='white'?'rgba(255,255,255,.9)':'rgba(120,240,255,.9)';ctx.beginPath();ctx.arc(sx,sy,16*(ef.t/.25+.2),0,Math.PI*2);ctx.fill()}}
-}
 function drawMini(){mctx.clearRect(0,0,115,115);mctx.fillStyle='#03101d';mctx.fillRect(0,0,115,115);const S=2;function mx(x){return 57+x*S}function my(y){return 57+y*S}mctx.fillStyle='#6f8795';for(const o of walls)mctx.fillRect(mx(o.x),my(o.y),o.w*S,o.h*S);mctx.fillStyle='#ff4444';for(const e of enemies){mctx.beginPath();mctx.arc(mx(e.x),my(e.y),4,0,7);mctx.fill()}mctx.fillStyle='#30ff9a';mctx.beginPath();mctx.arc(mx(player.x),my(player.y),5,0,7);mctx.fill();mctx.strokeStyle='#30ff9a';mctx.beginPath();mctx.moveTo(mx(player.x),my(player.y));mctx.lineTo(mx(player.x+Math.cos(player.a)*5),my(player.y+Math.sin(player.a)*5));mctx.stroke()}
 let last=0;function loop(ts){let dt=Math.min(.05,(ts-last)/1000||.016);last=ts;let sp=(document.getElementById('dash').matches(':active')?9:5.5)*dt;let f=-joy.y, s=joy.x;movePlayer((Math.cos(player.a)*f+Math.cos(player.a+Math.PI/2)*s)*sp,(Math.sin(player.a)*f+Math.sin(player.a+Math.PI/2)*s)*sp);for(const e of enemies){let dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy);if(d>4){let nx=e.x+dx/d*dt*1.2,ny=e.y+dy/d*dt*1.2;if(!rectHit(nx,ny,.5)){e.x=nx;e.y=ny}}}
 tracers.forEach(t=>t.t-=dt);tracers=tracers.filter(t=>t.t>0);effects.forEach(e=>e.t-=dt);effects=effects.filter(e=>e.t>0);drawWorld();drawMini();requestAnimationFrame(loop)}requestAnimationFrame(loop);
